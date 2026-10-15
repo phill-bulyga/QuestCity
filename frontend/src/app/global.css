@@ -1,0 +1,62 @@
+:root {
+  font-family: Inter, Roboto, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  color-scheme: light;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+  margin: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  min-width: 320px;
+  background: #faf9fd;
+  overscroll-behavior-y: none;
+}
+
+button,
+a,
+input {
+  -webkit-tap-highlight-color: transparent;
+}
+
+:focus-visible {
+  outline: 3px solid #9a6bff;
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}
+
+.quest-pin span, .stop-pin span {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  border: 3px solid white;
+  border-radius: 50% 50% 50% 4px;
+  background: #6f2cff;
+  color: white;
+  font: 800 15px system-ui;
+  box-shadow: 0 4px 12px #21193433;
+}
+.stop-pin span { background: #fff2e3; font-size: 18px; border-color: #dca45f; }
+.stop-pin.partner span { background: #e7f5ef; border-color: #168765; }
+.leaflet-container { font-family: inherit; }
+.leaflet-popup-content { line-height: 1.6; }
+.leaflet-control-zoom a { min-width: 44px; min-height: 44px; line-height: 44px !important; }
+.leaflet-popup-content { overflow-wrap: anywhere; }

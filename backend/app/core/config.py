@@ -19,6 +19,8 @@ class Settings(BaseSettings):
 
     database_url: str = "postgresql+asyncpg://questcity:questcity@localhost:5432/questcity"
     redis_url: str = "redis://localhost:6379/0"
+    redis_health_check: bool = True
+    frontend_dir: str | None = None
 
     jwt_secret: str = "development-only-secret-change-before-production"
     jwt_algorithm: str = "HS256"
@@ -39,6 +41,15 @@ class Settings(BaseSettings):
     llm_model: str = "gpt-6-luna"
     llm_timeout_seconds: int = Field(default=120, ge=10, le=300)
     llm_max_tokens: int = Field(default=16000, ge=1000, le=64000)
+
+    @field_validator("database_url", mode="before")
+    @classmethod
+    def normalize_database_url(cls, value: str) -> str:
+        # Managed databases provide a standard PostgreSQL URL; the app uses asyncpg.
+        for prefix in ("postgres://", "postgresql://"):
+            if value.startswith(prefix):
+                return "postgresql+asyncpg://" + value[len(prefix) :]
+        return value
 
     @field_validator("llm_base_url")
     @classmethod

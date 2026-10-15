@@ -17,9 +17,9 @@ async def liveness() -> dict[str, str]:
 async def readiness(db: DbSession) -> dict[str, str]:
     try:
         await db.execute(text("SELECT 1"))
-        redis = Redis.from_url(settings.redis_url)
-        await redis.ping()
-        await redis.aclose()
+        if settings.redis_health_check:
+            async with Redis.from_url(settings.redis_url) as redis:
+                await redis.ping()
     except Exception as exc:
         raise HTTPException(status_code=503, detail="Dependencies are unavailable") from exc
     return {"status": "ready"}

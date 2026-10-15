@@ -1,0 +1,36 @@
+# Free demonstration: database expires after 30 days; local uploads are ephemeral.
+services:
+  - type: web
+    name: questcity
+    runtime: docker
+    plan: free
+    region: frankfurt
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /api/v1/health/ready
+    autoDeployTrigger: commit
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: questcity-db
+          property: connectionString
+      - key: JWT_SECRET
+        generateValue: true
+      - key: ENVIRONMENT
+        value: production
+      - key: COOKIE_SECURE
+        value: "true"
+      - key: CORS_ORIGINS
+        value: ""
+      - key: REDIS_HEALTH_CHECK
+        value: "false"
+      - key: ALLOW_LOCATION_BYPASS
+        value: "true"
+      - key: SEED_DEMO
+        value: "true"
+databases:
+  - name: questcity-db
+    plan: free
+    region: frankfurt
+    databaseName: questcity
+    user: questcity
+    ipAllowList: []

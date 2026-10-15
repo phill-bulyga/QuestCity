@@ -1,4 +1,4 @@
-"""Create PostGIS extension and users table.
+"""Create users table.
 
 Revision ID: 20260924_0001
 Revises:
@@ -16,7 +16,8 @@ depends_on = None
 
 
 def upgrade() -> None:
-    op.execute("CREATE EXTENSION IF NOT EXISTS postgis")
+    # Coordinates use numeric columns and Python distance calculations, so an
+    # optional PostGIS extension must not prevent deployment on plain PostgreSQL.
     op.create_table(
         "users",
         sa.Column("id", sa.Uuid(), nullable=False),

@@ -4,6 +4,7 @@ from fastapi.staticfiles import StaticFiles
 
 from app.api.routes import admin, auth, game, generation, health, media, quests
 from app.core.config import settings
+from app.frontend import mount_frontend
 
 app = FastAPI(
     title=settings.app_name,
@@ -31,6 +32,10 @@ app.include_router(api_router)
 app.mount("/media", StaticFiles(directory=settings.media_dir, check_dir=False), name="media")
 
 
-@app.get("/", include_in_schema=False)
-async def root() -> dict[str, str]:
-    return {"name": settings.app_name, "docs": "/docs"}
+if settings.frontend_dir:
+    mount_frontend(app, settings.frontend_dir)
+else:
+
+    @app.get("/", include_in_schema=False)
+    async def root() -> dict[str, str]:
+        return {"name": settings.app_name, "docs": "/docs"}

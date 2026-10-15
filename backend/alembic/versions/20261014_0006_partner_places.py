@@ -1,6 +1,7 @@
 """Add curated rest stops and partner places to quests."""
 
 import sqlalchemy as sa
+
 from alembic import op
 
 revision = "20261014_0006"

@@ -2,6 +2,11 @@
 
 Mobile-first PWA for creating and completing city quests.
 
+## Render deployment
+
+The root `Dockerfile` and `render.yaml` deploy the frontend and API together with
+managed PostgreSQL. See [deployment instructions and free-plan limits](docs/render-deployment.md).
+
 ## Local development
 
 1. Copy `.env.example` to `.env` and replace `JWT_SECRET`.

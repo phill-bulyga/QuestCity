@@ -1,4 +1,5 @@
 import asyncio
+from uuid import UUID
 
 from sqlalchemy import select
 from sqlalchemy.orm import selectinload
@@ -168,7 +169,7 @@ REVEALS = {
 }
 
 
-async def seed() -> None:
+async def seed(author_id: UUID | None = None) -> None:
     async with SessionFactory() as db:
         existing = await db.scalar(
             select(Quest)
@@ -206,8 +207,12 @@ async def seed() -> None:
             print(f"Updated quest: {existing.id}")
             return
 
-        author = await db.scalar(
-            select(User).where(User.is_active.is_(True)).order_by(User.created_at)
+        author = (
+            await db.get(User, author_id)
+            if author_id
+            else await db.scalar(
+                select(User).where(User.is_active.is_(True)).order_by(User.created_at)
+            )
         )
         if author is None:
             raise RuntimeError("Create at least one QuestCity user before running the seed")
